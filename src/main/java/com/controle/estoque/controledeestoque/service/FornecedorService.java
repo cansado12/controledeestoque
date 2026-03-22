@@ -1,9 +1,9 @@
 package com.controle.estoque.controledeestoque.service;
 
 
-import com.controle.estoque.controledeestoque.DTO.ProdutoDTo;
 import com.controle.estoque.controledeestoque.DTO.RequestFornecedorDTo;
 import com.controle.estoque.controledeestoque.DTO.ResponseFornecedorDTo;
+import com.controle.estoque.controledeestoque.exception.FornecedorInvalidoException;
 import com.controle.estoque.controledeestoque.exception.FornecedorNotFoundException;
 import com.controle.estoque.controledeestoque.exception.ProdutoNotFoundException;
 import com.controle.estoque.controledeestoque.mapper.custom.FornecedorMapper;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class FornecedorService {
@@ -35,8 +33,14 @@ public class FornecedorService {
 
     @Transactional
     public ResponseFornecedorDTo criar(RequestFornecedorDTo dto) {
+        if (fornecedorRepository.existsByCnpj(dto.cnpj())) {
+            throw new FornecedorInvalidoException("Cnpj ja cadastrado");
+        }
         Fornecedor entity = mapper.toEntity(dto);
+
         entity = fornecedorRepository.save(entity);
+
+        
         return mapper.toDTO(entity);
 
 

@@ -49,6 +49,7 @@ public class FornecedorController {
     }
 
 
+
     @GetMapping("/{id}")
     @FornecedorSwagger.SwaggerFindIdFornecedor
     public ResponseEntity<ResponseFornecedorDTo> buscarPorId(@PathVariable Long id) {
@@ -78,14 +79,14 @@ public class FornecedorController {
         return ResponseEntity.ok(fornecedorService.listarProdutosPorFornecedor(fornecedorId));
     }
 
-    @DeleteMapping("/{fornecedor}/{produtoId}")
+    @DeleteMapping("/{fornecedorId}/{produtoId}")
     @FornecedorSwagger.SwaggerdeletarProdutoPorFornecedor
     public ResponseEntity<ResponseFornecedorDTo> deletarProdutoPorFornecedor(@PathVariable Long produtoId,
                                                                              @PathVariable Long fornecedorId) {
         return ResponseEntity.ok(fornecedorService.removerProduto(produtoId, fornecedorId));
     }
 
-    @PutMapping("/{fornecedor}/{produtoId}")
+    @PutMapping("/{fornecedorId}/{produtoId}")
     @FornecedorSwagger.SwaggeradicionarProdutoAoFornecedor
     public ResponseEntity<ResponseFornecedorDTo> adicionarProdutoAoFornecedor(@PathVariable Long produtoId,
                                                                              @PathVariable Long fornecedorId) {

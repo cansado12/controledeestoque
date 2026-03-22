@@ -3,7 +3,6 @@ package com.controle.estoque.controledeestoque.service;
 
 import com.controle.estoque.controledeestoque.DTO.RequestDTO;
 import com.controle.estoque.controledeestoque.DTO.ResponseDTO;
-import com.controle.estoque.controledeestoque.exception.FornecedorNotFoundException;
 import com.controle.estoque.controledeestoque.exception.ProdutoNotFoundException;
 import com.controle.estoque.controledeestoque.mapper.custom.ProdutoMapper;
 import com.controle.estoque.controledeestoque.model.Categoria;

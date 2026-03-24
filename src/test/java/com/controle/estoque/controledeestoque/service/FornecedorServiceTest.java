@@ -68,9 +68,10 @@ class FornecedorServiceTest {
         fornecedor.setEmail("Loucobr882@gmail.com");
         fornecedor.setCnpj("123123123123");
         fornecedor.setProdutos(new ArrayList<>());
+        fornecedor.setAtivo(true);
 
-        requestDTo = new RequestFornecedorDTo("Fornecedor","123123123123", "Loucobr882@gmail.com", "22999069944", new ArrayList<>());
-        responseDTo = new ResponseFornecedorDTo(1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944", new ArrayList<>());
+        requestDTo = new RequestFornecedorDTo("Fornecedor","123123123123", "Loucobr882@gmail.com", "22999069944", true ,new ArrayList<>() );
+        responseDTo = new ResponseFornecedorDTo(1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944", new ArrayList<>(), true);
 
 
         produto = new Produto();
@@ -80,6 +81,7 @@ class FornecedorServiceTest {
         produto.setQuantidade(5);
         produto.setCategoria(Categoria.ALIMENTOS);
         produto.setFornecedores(new ArrayList<>());
+
 
 
     }
@@ -142,8 +144,8 @@ class FornecedorServiceTest {
     @Test
     @DisplayName("atualizar - deve atualizar dados do fornecedor")
     void atualizar() {
-        RequestFornecedorDTo requestAtualizado = new RequestFornecedorDTo("luiz", "192931293","david@gmail", "2299921244", new ArrayList<>());
-        ResponseFornecedorDTo responseAtualizado = new ResponseFornecedorDTo(3L,"luiz", "192931293", "david@gmail", "2299921244", new ArrayList<>());
+        RequestFornecedorDTo requestAtualizado = new RequestFornecedorDTo("luiz", "192931293","david@gmail", "2299921244", true ,new ArrayList<>());
+        ResponseFornecedorDTo responseAtualizado = new ResponseFornecedorDTo(3L,"luiz", "192931293", "david@gmail", "2299921244", new ArrayList<>(), true);
 
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(repository.save(fornecedor)).thenReturn(fornecedor);
@@ -193,9 +195,9 @@ class FornecedorServiceTest {
     void adicionarProduto() {
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
-        when(produtoRepository.findById(2L)).thenReturn(Optional.of(produto));
+        when(produtoRepository.findById(1L)).thenReturn(Optional.of(produto));
 
-        ResponseFornecedorDTo result = service.adicionarProduto(1L, 2L);
+        ResponseFornecedorDTo result = service.adicionarProduto(1L, 1L);
         assertThat(result.id()).isEqualTo(1L);
         verify(repository).save(fornecedor);
 
@@ -225,7 +227,7 @@ class FornecedorServiceTest {
         ProdutoDTo produtoDto = new ProdutoDTo(1L, "david", new BigDecimal(24.21),6, Categoria.ALIMENTOS );
         ResponseFornecedorDTo responseComProdutos = new ResponseFornecedorDTo(
                 1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944",
-                new ArrayList<>(List.of(produtoDto))
+                new ArrayList<>(List.of(produtoDto)), true
         );
 
         fornecedor.setProdutos(new ArrayList<>(List.of(produto)));
@@ -251,7 +253,7 @@ class FornecedorServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(produtoRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.removerProduto(1L, 99L)).isInstanceOf(ProdutoNotFoundException.class);
+        assertThatThrownBy(() -> service.removerProduto(99L, 1L)).isInstanceOf(ProdutoNotFoundException.class);
     }
 
     @Test
@@ -260,7 +262,7 @@ class FornecedorServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(produtoRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.adicionarProduto(1L, 99L))
+        assertThatThrownBy(() -> service.adicionarProduto(99L, 1L))
                 .isInstanceOf(ProdutoNotFoundException.class);
     }
 

@@ -18,7 +18,7 @@ import com.controle.estoque.controledeestoque.annotation.swagger.FornecedorSwagg
 
 @Tag(name = "Fornecedores", description = "Endpoints para gerenciamento de Fornecedores")
 @RestController
-@RequestMapping("/fornecedor")
+@RequestMapping("/fornecedores")
 
 public class FornecedorController {
 
@@ -98,6 +98,15 @@ public class FornecedorController {
 
 
 
+
+
+    @PatchMapping("/{fornecedorId}/desativar")
+    @FornecedorSwagger.SwaggerdesabilitarFornecedor
+    public ResponseEntity<Void> desativarFornecedor(@PathVariable("fornecedorId") Long fornecedorId) {
+        ResponseFornecedorDTo fornecedorDTo = fornecedorService.desativarFornecedor(fornecedorId);
+        return ResponseEntity.noContent().build();
+
+    }
 
 
 

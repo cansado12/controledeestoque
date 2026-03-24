@@ -156,6 +156,24 @@ public class FornecedorSwagger {
     }
 
 
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+
+    @Operation(
+            summary = "desabilitar fornecedor",
+            description = "desabilita o fornecedor "
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Fornecedor desabilitado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Pedido invalido"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado"),
+            @ApiResponse(responseCode = "404", description = "Não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+
+    public @interface SwaggerdesabilitarFornecedor{}
+
+
 
 
     }

@@ -4,5 +4,11 @@ import com.controle.estoque.controledeestoque.model.Fornecedor;
 
 import java.util.List;
 
-public record ResponseFornecedorDTo(Long id,String nome, String cnpj, String email, String telefone, List<ProdutoDTo> produtos ) {
+public record ResponseFornecedorDTo(Long id
+        ,String nome
+        , String cnpj
+        , String email
+        , String telefone
+        , List<ProdutoDTo> produtos
+        , boolean ativo) {
 }

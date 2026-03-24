@@ -62,9 +62,13 @@ public class FornecedorService {
     public ResponseFornecedorDTo atualizar(Long id, RequestFornecedorDTo dto) {
         Fornecedor f = fornecedorRepository.findById(id).orElseThrow(() -> new FornecedorNotFoundException(id));
         f.setNome(dto.nome());
+        if (!dto.status()) {
+            f.setAtivo(false);
+        }
         f.setCnpj(dto.cnpj());
         f.setEmail(dto.email());
         f.setTelefone(dto.telefone());
+
 
        var save =   fornecedorRepository.save(f);
        return mapper.toDTO(save);
@@ -110,6 +114,17 @@ public class FornecedorService {
 
 
        return mapper.toDTO(fornecedor);
+
+
+    }
+
+    @Transactional
+    public ResponseFornecedorDTo desativarFornecedor(Long fornecedorId) {
+        Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId).orElseThrow(() -> new FornecedorNotFoundException(fornecedorId));
+        fornecedor.setAtivo(false);
+        fornecedorRepository.save(fornecedor);
+        return mapper.toDTO(fornecedor);
+
     }
 
 

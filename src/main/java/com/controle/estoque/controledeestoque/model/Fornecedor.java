@@ -4,6 +4,7 @@ package com.controle.estoque.controledeestoque.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,26 @@ public class Fornecedor {
     @NotBlank
     private String telefone;
 
+    @Column(name = "ativo", nullable = false, columnDefinition = "boolean default true")
+    @Schema(description = "fornecedor ativo ou nao")
+    @NotNull
+    private boolean ativo;
+
+
     @ManyToMany(mappedBy = "fornecedores")
     private List<Produto> produtos =  new ArrayList<>();
 
 
     public Fornecedor() {
+    }
+
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public List<Produto> getProdutos() {

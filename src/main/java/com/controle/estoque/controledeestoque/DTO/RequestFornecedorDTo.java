@@ -10,7 +10,7 @@ import java.util.List;
 public record RequestFornecedorDTo(@NotBlank(message = "Nome obrigatorio") String nome,
                                    @NotBlank(message = "Cnpj obrigatorio")
                                    @Pattern(
-                                           regexp = "\\d{14}|\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}",
+                                           regexp = "\\d{14}",
                                            message = "CNPJ inválido"
                                    ) String cnpj,
                                    @NotBlank(message = "Email obrigatorio")

@@ -5,7 +5,6 @@ import com.controle.estoque.controledeestoque.DTO.ResponseDTO;
 import com.controle.estoque.controledeestoque.exception.ProdutoNotFoundException;
 import com.controle.estoque.controledeestoque.mapper.custom.ProdutoMapper;
 import com.controle.estoque.controledeestoque.model.Categoria;
-import com.controle.estoque.controledeestoque.model.Fornecedor;
 import com.controle.estoque.controledeestoque.model.Produto;
 import com.controle.estoque.controledeestoque.repository.ProdutoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,19 +33,19 @@ import static org.mockito.Mockito.*;
 class ProdutoServiceTest {
 
     @Mock
-    ProdutoRepository repository;
+    private ProdutoRepository repository;
 
     @InjectMocks
-    ProdutoService service;
+    private ProdutoService service;
 
     @Mock
-    ProdutoMapper mapper;
+    private ProdutoMapper mapper;
 
     private Produto produto;
     private ResponseDTO responseDTO;
     private RequestDTO requestDTO;
     private Pageable pageable;
-    private Fornecedor fornecedor;
+
 
 
     @BeforeEach

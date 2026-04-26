@@ -11,5 +11,9 @@ public record ProdutoDTo(@NotNull(message = "Id obrigatorio") Long id,
                          @NotNull(message = "Preco obrigatorio") BigDecimal preco,
                          @NotNull(message = "Quantidade obrigatoria") Integer quantidade,
                          @NotNull(message = "Categoria obrigatoria") Categoria categoria
-) {
+)
+
+{
+
+
 }

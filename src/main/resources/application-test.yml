@@ -1,19 +1,15 @@
 spring:
-  application:
-    name: controledeestoque
-
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/produtodb?useTimezone=true&serverTimezone=UTC
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
   jpa:
-    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: validate
-    show-sql: false
-
+      ddl-auto: none
+    show-sql: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -23,7 +19,6 @@ spring:
       mail.smpt.auth: true
       mail.smpt.starttls.enabled: true
       mail.smpt.starttls.required: true
-
 
   servlet:
     multipart:
@@ -38,18 +33,11 @@ spring:
     baseline-on-migrate: true
 
 file:
-  upload-dir: ${uploadDir}
+  upload-dir: ${user.home}/upload
+
 
 email:
   subject: "Default Subject"
   message: "Default message"
 
-logging:
-  level:
-    root: WARN
 
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html

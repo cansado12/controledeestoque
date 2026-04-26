@@ -98,11 +98,11 @@ public class ProdutoSwagger {
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     @Operation(
-            summary = "Atualiza o produto",
-            description = "Atualiza as informaçoes de um produto"
+            summary = "Criacao massiva de produto",
+        description = "Criacao massiva de produto com upload de de XLSX ou CSV"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Produtos criados com sucesso"),
             @ApiResponse(responseCode = "400", description = "Pedido invalido"),
             @ApiResponse(responseCode = "401", description = "Não autorizado"),
             @ApiResponse(responseCode = "404", description = "Não encontrado"),
@@ -110,6 +110,43 @@ public class ProdutoSwagger {
 
     public @interface SwaggerUpdateProduto {
     }
+
+
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Operation(
+            summary = "Cria um produto",
+            description = "Cria e adiciona um produto"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto cadstrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Pedido invalido"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado"),
+            @ApiResponse(responseCode = "404", description = "Não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+
+    public @interface SwaggerUploadProduce {
+    }
+
+
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Operation(
+            summary = "exporta produtos",
+            description = "exporta produtos enviados"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto cadstrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Pedido invalido"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado"),
+            @ApiResponse(responseCode = "404", description = "Não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+
+    public @interface SwaggerExportProduce {
+    }
+
 
 
 }

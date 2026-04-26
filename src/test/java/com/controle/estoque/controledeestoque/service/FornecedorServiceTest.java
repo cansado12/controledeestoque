@@ -2,7 +2,7 @@ package com.controle.estoque.controledeestoque.service;
 
 import com.controle.estoque.controledeestoque.DTO.ProdutoDTo;
 import com.controle.estoque.controledeestoque.DTO.RequestFornecedorDTo;
-import com.controle.estoque.controledeestoque.DTO.ResponseFornecedorDTo;
+import com.controle.estoque.controledeestoque.DTO.ResponseFornecedorDTO;
 import com.controle.estoque.controledeestoque.exception.FornecedorNotFoundException;
 import com.controle.estoque.controledeestoque.exception.ProdutoNotFoundException;
 import com.controle.estoque.controledeestoque.mapper.custom.FornecedorMapper;
@@ -51,7 +51,7 @@ class FornecedorServiceTest {
     private Fornecedor fornecedor;
     private PageRequest pageable;
     private RequestFornecedorDTo  requestDTo;
-    private ResponseFornecedorDTo responseDTo;
+    private ResponseFornecedorDTO responseDTo;
     private Produto produto;
 
 
@@ -71,7 +71,7 @@ class FornecedorServiceTest {
         fornecedor.setAtivo(true);
 
         requestDTo = new RequestFornecedorDTo("Fornecedor","123123123123", "Loucobr882@gmail.com", "22999069944", true ,new ArrayList<>() );
-        responseDTo = new ResponseFornecedorDTo(1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944", new ArrayList<>(), true);
+        responseDTo = new ResponseFornecedorDTO(1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944", new ArrayList<>(), true);
 
 
         produto = new Produto();
@@ -92,7 +92,7 @@ class FornecedorServiceTest {
         when(mapper.toEntity(requestDTo)).thenReturn(fornecedor);
         when(repository.save(fornecedor)).thenReturn(fornecedor);
         when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
-        ResponseFornecedorDTo result = service.criar(requestDTo);
+        ResponseFornecedorDTO result = service.criar(requestDTo);
 
 
         assertThat(result.nome()).isEqualTo("Fornecedor");
@@ -109,7 +109,7 @@ class FornecedorServiceTest {
     void buscarPorId() {
        when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
        when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
-       ResponseFornecedorDTo result = service.buscarPorId(1L);
+       ResponseFornecedorDTO result = service.buscarPorId(1L);
        assertThat(result.id()).isEqualTo(1L);
        assertThat(result.nome()).isEqualTo("Fornecedor");
 
@@ -133,7 +133,7 @@ class FornecedorServiceTest {
         when(repository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(fornecedor)));
         when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
 
-        Page <ResponseFornecedorDTo> result = service.listarTodos(pageable);
+        Page <ResponseFornecedorDTO> result = service.listarTodos(pageable);
         assertThat(result.toList()).hasSize(1);
 
     }
@@ -145,13 +145,13 @@ class FornecedorServiceTest {
     @DisplayName("atualizar - deve atualizar dados do fornecedor")
     void atualizar() {
         RequestFornecedorDTo requestAtualizado = new RequestFornecedorDTo("luiz", "192931293","david@gmail", "2299921244", true ,new ArrayList<>());
-        ResponseFornecedorDTo responseAtualizado = new ResponseFornecedorDTo(3L,"luiz", "192931293", "david@gmail", "2299921244", new ArrayList<>(), true);
+        ResponseFornecedorDTO responseAtualizado = new ResponseFornecedorDTO(3L,"luiz", "192931293", "david@gmail", "2299921244", new ArrayList<>(), true);
 
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(repository.save(fornecedor)).thenReturn(fornecedor);
         when(mapper.toDTO(fornecedor)).thenReturn(responseAtualizado);
 
-        ResponseFornecedorDTo result = service.atualizar(1l, requestAtualizado);
+        ResponseFornecedorDTO result = service.atualizar(1l, requestAtualizado);
         assertThat(result.nome()).isEqualTo("luiz");
         assertThat(result.id()).isEqualTo(3L);
         verify(repository).save(fornecedor);
@@ -197,7 +197,7 @@ class FornecedorServiceTest {
         when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
         when(produtoRepository.findById(1L)).thenReturn(Optional.of(produto));
 
-        ResponseFornecedorDTo result = service.adicionarProduto(1L, 1L);
+        ResponseFornecedorDTO result = service.adicionarProduto(1L, 1L);
         assertThat(result.id()).isEqualTo(1L);
         verify(repository).save(fornecedor);
 
@@ -213,7 +213,7 @@ class FornecedorServiceTest {
         when(mapper.toDTO(fornecedor)).thenReturn(responseDTo);
         when(produtoRepository.findById(1L)).thenReturn(Optional.of(produto));
 
-        ResponseFornecedorDTo result = service.removerProduto(1L, 1L);
+        ResponseFornecedorDTO result = service.removerProduto(1L, 1L);
         assertThat(result.id()).isEqualTo(1L);
         verify(repository).save(fornecedor);
 
@@ -225,7 +225,7 @@ class FornecedorServiceTest {
     @DisplayName("listarProdutosPorFornecedor - Lista todos os produtos por fornecedor")
     void listarProdutosPorFornecedor() {
         ProdutoDTo produtoDto = new ProdutoDTo(1L, "david", new BigDecimal(24.21),6, Categoria.ALIMENTOS );
-        ResponseFornecedorDTo responseComProdutos = new ResponseFornecedorDTo(
+        ResponseFornecedorDTO responseComProdutos = new ResponseFornecedorDTO(
                 1L, "Fornecedor", "123123123123", "loucobr882@gmail.com", "22999069944",
                 new ArrayList<>(List.of(produtoDto)), true
         );
@@ -234,7 +234,7 @@ class FornecedorServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(fornecedor));
         when(mapper.toDTO(fornecedor)).thenReturn(responseComProdutos);
 
-        ResponseFornecedorDTo result = service.listarProdutosPorFornecedor(1L);
+        ResponseFornecedorDTO result = service.listarProdutosPorFornecedor(1L);
 
         assertThat(result.produtos()).hasSize(1);
         verify(repository).findById(1L);

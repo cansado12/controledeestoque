@@ -2,7 +2,7 @@ package com.controle.estoque.controledeestoque.service;
 
 
 import com.controle.estoque.controledeestoque.DTO.RequestFornecedorDTo;
-import com.controle.estoque.controledeestoque.DTO.ResponseFornecedorDTo;
+import com.controle.estoque.controledeestoque.DTO.ResponseFornecedorDTO;
 import com.controle.estoque.controledeestoque.exception.FornecedorInvalidoException;
 import com.controle.estoque.controledeestoque.exception.FornecedorNotFoundException;
 import com.controle.estoque.controledeestoque.exception.ProdutoNotFoundException;
@@ -32,7 +32,7 @@ public class FornecedorService {
     }
 
     @Transactional
-    public ResponseFornecedorDTo criar(RequestFornecedorDTo dto) {
+    public ResponseFornecedorDTO criar(RequestFornecedorDTo dto) {
         if (fornecedorRepository.existsByCnpj(dto.cnpj())) {
             throw new FornecedorInvalidoException("Cnpj ja cadastrado");
         }
@@ -46,20 +46,20 @@ public class FornecedorService {
 
     }
     @Transactional(readOnly = true)
-    public ResponseFornecedorDTo buscarPorId(Long id) {
+    public ResponseFornecedorDTO buscarPorId(Long id) {
      return fornecedorRepository.findById(id).map(mapper::toDTO).
                 orElseThrow(() -> new FornecedorNotFoundException(id));
 
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseFornecedorDTo> listarTodos(Pageable pageable) {
+    public Page<ResponseFornecedorDTO> listarTodos(Pageable pageable) {
 
         return fornecedorRepository.findAll(pageable).map(mapper::toDTO);
     }
 
     @Transactional
-    public ResponseFornecedorDTo atualizar(Long id, RequestFornecedorDTo dto) {
+    public ResponseFornecedorDTO atualizar(Long id, RequestFornecedorDTo dto) {
         Fornecedor f = fornecedorRepository.findById(id).orElseThrow(() -> new FornecedorNotFoundException(id));
         f.setNome(dto.nome());
         if (!dto.status()) {
@@ -68,6 +68,7 @@ public class FornecedorService {
         f.setCnpj(dto.cnpj());
         f.setEmail(dto.email());
         f.setTelefone(dto.telefone());
+
 
 
        var save =   fornecedorRepository.save(f);
@@ -86,28 +87,34 @@ public class FornecedorService {
 
 
     @Transactional
-    public ResponseFornecedorDTo adicionarProduto(Long produtoId, Long fornecedorId) {
+    public ResponseFornecedorDTO adicionarProduto(Long produtoId, Long fornecedorId) {
         Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId).orElseThrow(() -> new FornecedorNotFoundException(fornecedorId));
         Produto produto = produtoRepository.findById(produtoId).orElseThrow(() -> new ProdutoNotFoundException(produtoId));
 
+        produto.getFornecedores().add(fornecedor);
         fornecedor.getProdutos().add(produto);
+
+        produtoRepository.save(produto);
         fornecedorRepository.save(fornecedor);
         return mapper.toDTO(fornecedor);
 
     }
 
     @Transactional
-    public ResponseFornecedorDTo removerProduto(Long produtoId, Long fornecedorId){
+    public ResponseFornecedorDTO removerProduto(Long produtoId, Long fornecedorId){
         Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId).orElseThrow(() -> new FornecedorNotFoundException(fornecedorId));
         Produto produto = produtoRepository.findById(produtoId).orElseThrow(() -> new ProdutoNotFoundException(produtoId));
 
+
+        produto.getFornecedores().remove(fornecedor);
         fornecedor.getProdutos().remove(produto);
+        produtoRepository.save(produto);
         fornecedorRepository.save(fornecedor);
         return mapper.toDTO(fornecedor);
     }
 
     @Transactional(readOnly = true)
-    public ResponseFornecedorDTo listarProdutosPorFornecedor(Long fornecedorId) {
+    public ResponseFornecedorDTO listarProdutosPorFornecedor(Long fornecedorId) {
         Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId)
                 .orElseThrow(() -> new FornecedorNotFoundException(fornecedorId));
 
@@ -119,7 +126,7 @@ public class FornecedorService {
     }
 
     @Transactional
-    public ResponseFornecedorDTo desativarFornecedor(Long fornecedorId) {
+    public ResponseFornecedorDTO desativarFornecedor(Long fornecedorId) {
         Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId).orElseThrow(() -> new FornecedorNotFoundException(fornecedorId));
         fornecedor.setAtivo(false);
         fornecedorRepository.save(fornecedor);
